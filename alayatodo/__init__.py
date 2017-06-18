@@ -23,5 +23,4 @@ from alayatodo.models import User
 def before_request():
     g.user = User.query.get(session['user_id']) if session.get('user_id', None) is not None else None
 
-    
 app.wsgi_app = middleware.MethodRewriteMiddleware(app.wsgi_app)

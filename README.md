@@ -51,7 +51,7 @@ Separate your commits by task and use the following format for your commit messa
 * ~~TASK 3: As a user I can view a todo in a JSON format.~~
     - Ex: /todo/{id}/json => {id: 1, user_id: 1, description: "Lorem Ipsum"}
 * ~~TASK 4: As a user I can see a confirmation message when I add/delete a todo.~~
-* TASK 5: As a user I can see my list of todos paginated.
+* ~~TASK 5: As a user I can see my list of todos paginated.~~
 * ~~TASK 6: Implement an ORM database access layer so we don’t have SQL in the controller code.~~
 
 Extra tasks:

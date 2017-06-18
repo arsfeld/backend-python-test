@@ -93,7 +93,9 @@ def todo_json(id):
 @app.route('/todo/', methods=['GET'])
 @login_required
 def todos():
-    return render_template('todos.html', todos=g.user.todos)
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 2))
+    return render_template('todos.html', todos=g.user.todos.paginate(page, per_page))
 
 
 @app.route('/todo', methods=['POST'])
@@ -108,4 +110,4 @@ def todos_POST():
         flash('Cannot add the todo: %s' % (e,), 'danger')
         return render_template('todos.html', todos=g.user.todos)
     flash('Todo added, now work hard to complete it!', 'success')
-    return redirect('/todo')
+    return redirect(request.referrer or url_for('todos'))
