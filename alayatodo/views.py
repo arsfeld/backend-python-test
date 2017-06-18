@@ -55,17 +55,31 @@ def logout():
     return redirect('/')
 
 
-@app.route('/todo/<id>', methods=['GET', 'POST'])
+@app.route('/todo/<id>', methods=['GET'])
 def todo(id):
     todo = Todo.query.get_or_404(id)
     if todo.user.id != g.user.id:
         abort(401)
-    if request.method == 'POST':
-        todo.completed = request.form.get('completed', '0') == '1'
-        db.session.commit()
-        return redirect(request.referrer or url_for('todo', id=id))
     return render_template('todo.html', todo=todo)
 
+@app.route('/todo/<id>', methods=['POST', 'PUT'])
+def todo_update(id):
+    todo = Todo.query.get_or_404(id)
+    if todo.user.id != g.user.id:
+        abort(401)
+    todo.completed = request.form.get('completed', '0') == '1'
+    db.session.commit()
+    return redirect(request.referrer or url_for('todo', id=id))
+
+@app.route('/todo/<id>', methods=['DELETE'])
+def todo_delete(id):
+    todo = Todo.query.get_or_404(id)
+    if todo.user.id != g.user.id:
+        abort(401)
+    db.session.delete(todo)
+    db.session.commit()
+    flash('Todo deleted, congrats!', 'success')
+    return redirect('/todo')
 
 @app.route('/todo/<id>/json', methods=['GET'])
 def todo_json(id):
@@ -91,17 +105,7 @@ def todos_POST():
         db.session.add(todo)
         db.session.commit()
     except ValueError as e:
-        flash('Cannot add the todo: %s' % (e,))
+        flash('Cannot add the todo: %s' % (e,), 'danger')
         return render_template('todos.html', todos=g.user.todos)
-    return redirect('/todo')
-
-
-@app.route('/todo/<id>', methods=['POST'])
-@login_required
-def todo_delete(id):
-    todo = Todo.query.get_or_404(id)
-    if todo.user.id != g.user.id:
-        abort(401)
-    db.session.delete(todo)
-    db.session.commit()
+    flash('Todo added, now work hard to complete it!', 'success')
     return redirect('/todo')

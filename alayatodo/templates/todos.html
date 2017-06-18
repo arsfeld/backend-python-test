@@ -18,10 +18,10 @@
                 </td>
                 <td>
                     <div class="btn-group">
-                        <form method="post" action="{{ url_for('todo_delete', id=todo.id) }}">
+                        <form method="post" action="{{ url_for('todo_delete', id=todo.id) }}?_method=DELETE">
                             <button type="submit" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove glyphicon-white"></span></button>
                         </form>
-                        <form method="post" action="{{ url_for('todo', id=todo.id) }}">
+                        <form method="post" action="{{ url_for('todo_update', id=todo.id) }}?_method=PUT">
                             <input type="hidden" name="completed" value="{{ 0 if todo.completed else 1 }}" />
                             <button type="submit" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-ok glyphicon-white"></span></button>
                         </form>
