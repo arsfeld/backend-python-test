@@ -46,7 +46,7 @@ Separate your commits by task and use the following format for your commit messa
 
 ### Tasks
 * ~~TASK 1: As a user I can't add a todo without a description.~~
-* TASK 2: As a user I can mark a todo as completed.
+* ~~TASK 2: As a user I can mark a todo as completed.~~
     - Write a database migration script in `resources/`
 * TASK 3: As a user I can view a todo in a JSON format.
     - Ex: /todo/{id}/json => {id: 1, user_id: 1, description: "Lorem Ipsum"}

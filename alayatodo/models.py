@@ -17,6 +17,7 @@ class Todo(db.Model):
     __tablename__ = 'todos'
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(300))
+    completed = db.Column(db.Boolean)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('User',

@@ -53,9 +53,13 @@ def logout():
     return redirect('/')
 
 
-@app.route('/todo/<id>', methods=['GET'])
+@app.route('/todo/<id>', methods=['GET', 'POST'])
 def todo(id):
     todo = Todo.query.get_or_404(id)
+    if request.method == 'POST':
+        todo.completed = request.form.get('completed', '0') == '1'
+        db.session.commit()
+        return redirect(request.referrer or url_for('todo', id=id))
     return render_template('todo.html', todo=todo)
 
 

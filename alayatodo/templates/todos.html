@@ -11,13 +11,21 @@
                 <td>{{ todo.user_id }}</td>
                 <td>
                     <a href="{{ url_for('todo', id=todo.id) }}">
-                       {{ todo.description }}
+                        {% if todo.completed %}<s>{% endif%}
+                            {{ todo.description }}
+                        {% if todo.completed %}</s>{% endif%}
                     </a>
                 </td>
                 <td>
-                    <form method="post" action="{{ url_for('todo_delete', id=todo.id) }}">
-                        <button type="submit" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove glyphicon-white"></span></button>
-                    </form>
+                    <div class="btn-group">
+                        <form method="post" action="{{ url_for('todo_delete', id=todo.id) }}">
+                            <button type="submit" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove glyphicon-white"></span></button>
+                        </form>
+                        <form method="post" action="{{ url_for('todo', id=todo.id) }}">
+                            <input type="hidden" name="completed" value="{{ 0 if todo.completed else 1 }}" />
+                            <button type="submit" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-ok glyphicon-white"></span></button>
+                        </form>
+                    </div>
                 </td>
             </tr>
         {% endfor %}
