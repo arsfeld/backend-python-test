@@ -36,7 +36,7 @@ def migrate():
                 print "Running %s" % (filename,)
                 with open(os.path.join(dirpath, filename)) as f:
                     conn.executescript(f.read())
-                print conn.execute('INSERT INTO migrations(name) VALUES (?)', (filename,)).fetchall()
+                conn.execute('INSERT INTO migrations(name) VALUES (?)', (filename,)).fetchall()
 
 
 if __name__ == '__main__':
