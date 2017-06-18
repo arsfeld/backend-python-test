@@ -23,17 +23,18 @@ class Todo(db.Model):
     user = db.relationship('User',
         backref=db.backref('todos', lazy='dynamic'))
 
-
     def __init__(self, description, user):
         self.description = description
         self.user = user
-
 
     @db.validates('description')
     def validate_description(self, key, description):
         if not description:
             raise ValueError('Description cannot be empty')
         return description
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     def __repr__(self):
         return '<Todo %r>' % self.description

@@ -6,7 +6,9 @@ from flask import (
     render_template,
     request,
     session,
-    flash
+    flash,
+    jsonify,
+    abort
     )
 from models import (User, Todo)
 
@@ -56,11 +58,21 @@ def logout():
 @app.route('/todo/<id>', methods=['GET', 'POST'])
 def todo(id):
     todo = Todo.query.get_or_404(id)
+    if todo.user.id != g.user.id:
+        abort(401)
     if request.method == 'POST':
         todo.completed = request.form.get('completed', '0') == '1'
         db.session.commit()
         return redirect(request.referrer or url_for('todo', id=id))
     return render_template('todo.html', todo=todo)
+
+
+@app.route('/todo/<id>/json', methods=['GET'])
+def todo_json(id):
+    todo = Todo.query.get_or_404(id)
+    if todo.user.id != g.user.id:
+        abort(401)
+    return jsonify(todo.as_dict())
 
 
 @app.route('/todo', methods=['GET'])
@@ -87,6 +99,9 @@ def todos_POST():
 @app.route('/todo/<id>', methods=['POST'])
 @login_required
 def todo_delete(id):
-    db.session.delete(Todo.query.get_or_404(id))
+    todo = Todo.query.get_or_404(id)
+    if todo.user.id != g.user.id:
+        abort(401)
+    db.session.delete(todo)
     db.session.commit()
     return redirect('/todo')
