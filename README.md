@@ -45,7 +45,7 @@ You can complete the tasks in any order.
 Separate your commits by task and use the following format for your commit messages: TASK-{task number}: {meaningful message}
 
 ### Tasks
-* TASK 1: As a user I can't add a todo without a description.
+* ~~TASK 1: As a user I can't add a todo without a description.~~
 * TASK 2: As a user I can mark a todo as completed.
     - Write a database migration script in `resources/`
 * TASK 3: As a user I can view a todo in a JSON format.

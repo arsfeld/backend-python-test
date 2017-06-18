@@ -5,7 +5,8 @@ from flask import (
     redirect,
     render_template,
     request,
-    session
+    session,
+    flash
     )
 from models import (User, Todo)
 
@@ -69,9 +70,13 @@ def todos():
 @app.route('/todo/', methods=['POST'])
 @login_required
 def todos_POST():
-    todo = Todo(user=g.user, description=request.form.get('description', ''))
-    db.session.add(todo)
-    db.session.commit()
+    try:
+        todo = Todo(user=g.user, description=request.form.get('description', ''))
+        db.session.add(todo)
+        db.session.commit()
+    except ValueError as e:
+        flash('Cannot add the todo: %s' % (e,))
+        return render_template('todos.html', todos=g.user.todos)
     return redirect('/todo')
 
 

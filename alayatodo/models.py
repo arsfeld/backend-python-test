@@ -27,5 +27,12 @@ class Todo(db.Model):
         self.description = description
         self.user = user
 
+
+    @db.validates('description')
+    def validate_description(self, key, description):
+        if not description:
+            raise ValueError('Description cannot be empty')
+        return description
+
     def __repr__(self):
         return '<Todo %r>' % self.description
